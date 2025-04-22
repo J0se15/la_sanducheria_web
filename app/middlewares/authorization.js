@@ -15,6 +15,7 @@ async function soloAdmin(req, res, next) {
     return res.status(401).send({ status: "Error", message: "No autorizado" });
   }
 
+  
   try {
     const decoded = jsonwebtoken.verify(token, process.env.JWT_SECRET);
     req.user = decoded; // Almacena la información del usuario en la request

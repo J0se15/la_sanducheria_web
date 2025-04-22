@@ -3,23 +3,18 @@ import bcryptjs from "bcryptjs";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
 import { query } from "../database/db.js"; // Importa la función query
+import { UserRoles } from "../constanst/user.js";
 
 dotenv.config();
 
 async function register(req, res) {
-  const { user, password, email } = req.body;
+  const { username, password, email } = req.body;
 
-  if (!user || !password || !email) {
+  if (!username || !password || !email) {
     return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
   }
 
   try {
-    // Verificar si el usuario ya existe
-    const userResult = await query('SELECT * FROM users WHERE user = $1', [user]);
-    if (userResult.rows.length > 0) {
-      return res.status(400).send({ status: "Error", message: "El usuario ya existe" });
-    }
-
     // Verificar si el email ya existe
     const emailResult = await query('SELECT * FROM users WHERE email = $1', [email]);
     if (emailResult.rows.length > 0) {
@@ -30,8 +25,8 @@ async function register(req, res) {
     const hashPassword = await bcryptjs.hash(password, salt);
 
     const newUserResult = await query(
-      'INSERT INTO users (user, email, password) VALUES ($1, $2, $3) RETURNING id, user, email',
-      [user, email, hashPassword]
+      'INSERT INTO users (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING id, username, email',
+      [username, email, hashPassword, UserRoles.ADMIN]
     );
 
     return res.status(201).send({
@@ -46,14 +41,14 @@ async function register(req, res) {
 }
 
 async function login(req, res) {
-  const { user, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!user || !password) {
+  if (!email || !password) {
     return res.status(400).send({ status: "Error", message: "Los campos están incompletos" });
   }
 
   try {
-    const userResult = await query('SELECT * FROM users WHERE user = $1', [user]);
+    const userResult = await query('SELECT * FROM users WHERE email = $1', [email]);
     if (userResult.rows.length === 0) {
       return res.status(400).send({ status: "Error", message: "Credenciales inválidas" });
     }
@@ -66,9 +61,9 @@ async function login(req, res) {
     }
 
     const token = jsonwebtoken.sign(
-      { id: usuarioARevisar.id, user: usuarioARevisar.user, role: usuarioARevisar.role }, // Incluye el ID y el rol en el token
+      { id: usuarioARevisar.id, username: usuarioARevisar.username, role: usuarioARevisar.role },
       process.env.JWT_SECRET,
-      { expiresIn: process.env.JWT_COOKIE_EXPIRATION }
+      { expiresIn: 1 * 60 * 60 } // 1 hora
     );
 
     const cookieOptions = {
