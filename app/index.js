@@ -25,6 +25,8 @@ app.get("/admin", authorization.soloAdmin, (req, res) =>
   res.sendFile(path.join(__dirname, "/pages/admin/admin.html")));
 app.get("/products", authorization.soloAdmin, (req, res) =>
   res.sendFile(path.join(__dirname, "/pages/admin/products.html")));
+app.get("/list_products", authorization.soloAdmin, (req, res) =>
+  res.sendFile(path.join(__dirname, "/pages/admin/list_products.html")));
 
 
 // API Routes
