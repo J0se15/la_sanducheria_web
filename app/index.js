@@ -7,6 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { methods as authentecation } from "./controller/authentecation.controller.js";
 import { methods as authorization } from "./middlewares/authorization.js"; // Importa el middleware
 import { connect } from "./database/db.js";
+import { methods as products } from "./controller/products.controller.js";
 
 const app = express();
 app.set("port", 4000);
@@ -17,10 +18,16 @@ app.use(express.static(path.join(__dirname, "public"))); // Usa path.join para c
 app.use(express.json());
 app.use(cookieParser());
 
+//Screen Routes
 app.get("/", authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, "/pages/login.html")));
 app.get("/register", authorization.soloPublico, (req, res) => res.sendFile(path.join(__dirname, "/pages/register.html")));
 app.get("/admin", authorization.soloAdmin, (req, res) =>
-  res.sendFile(path.join(__dirname, "/pages/admin/admin.html"))
-);
+  res.sendFile(path.join(__dirname, "/pages/admin/admin.html")));
+app.get("/products", authorization.soloAdmin, (req, res) =>
+  res.sendFile(path.join(__dirname, "/pages/admin/products.html")));
+
+
+// API Routes
 app.post("/api/login", authentecation.login);
 app.post("/api/register", authentecation.register);
+app.post("/api/products", authorization.soloAdmin, products.create);

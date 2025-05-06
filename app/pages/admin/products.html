@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Products</title>
+</head>
+<body>
+    <main>
+        <div class="form-container">
+            <h1>Crear producto</h1>
+            <form id="create-product-form">
+                <label for="name" class="sr-only">Nombre</label>
+                <input type="text" name="name" id="name" placeholder="Nombre">
+                <label for="price" class="sr-only">Precio</label>
+                <input type="number" name="price" id="price" placeholder="Precio">
+                <label for="quantity" class="sr-only">Cantidad</label>
+                <input type="number" name="quantity" id="quantity" placeholder="Cantidad">
+                <label for="isActive" class="sr-only">Precio</label>
+                <input type="checkbox" id="isActive">
+                <label for="isActive">Activo</label>
+                <button type="submit">Agregar Productos</button> 
+                <p class="error escondido"></p>
+            </form>
+
+        </div>
+    </main>
+</body>
+<script src="products.js" defer></script>
+</html>
