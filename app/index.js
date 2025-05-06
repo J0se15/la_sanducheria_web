@@ -31,3 +31,4 @@ app.get("/products", authorization.soloAdmin, (req, res) =>
 app.post("/api/login", authentecation.login);
 app.post("/api/register", authentecation.register);
 app.post("/api/products", authorization.soloAdmin, products.create);
+app.get("/api/products", products.getAll);

@@ -25,6 +25,22 @@ async function create(req, res) {
       return res.status(500).send({ status: "Error", message: "Error al registrar el producto" });
     } 
 }
+
+async function getAll(req, res) {
+    try {
+        const result = await query('SELECT * FROM products');
+        return res.status(200).send({
+            status: "ok",
+            message: "Productos obtenidos con éxito",
+            data: result.rows,
+        });
+    } catch (error) {
+        console.error("Error al obtener productos:", error);
+        return res.status(500).send({ status: "Error", message: "Error al obtener los productos" });
+    }
+}
+
 export const methods = {
     create,
+    getAll,
   };
