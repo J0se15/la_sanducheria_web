@@ -11,6 +11,7 @@ window.addEventListener("load", async () => {
             <td>${product.price}</td>
             <td>${product.quantity}</td>
             <td>${product.isactive ? 'Activo' : 'Inactivo'}</td>
+            <td><a href='editar'>editar</a> <a href='eliminar'>eliminar</a></td>
         `;
         tableBody.appendChild(tr);
     });
