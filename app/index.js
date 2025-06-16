@@ -34,3 +34,5 @@ app.post("/api/login", authentecation.login);
 app.post("/api/register", authentecation.register);
 app.post("/api/products", authorization.soloAdmin, products.create);
 app.get("/api/products", products.getAll);
+app.put("/api/products", authorization.soloAdmin, products.update);
+app.delete("/api/products/:id", authorization.soloAdmin, products.deleteProduct);
