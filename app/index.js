@@ -6,6 +6,7 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 import { methods as authentecation } from "./controller/authentecation.controller.js";
 import { methods as authorization } from "./middlewares/authorization.js"; // Importa el middleware
+import { methods as categories } from "./controller/categories.controller.js";
 import { connect } from "./database/db.js";
 import { methods as products } from "./controller/products.controller.js";
 
@@ -32,7 +33,15 @@ app.get("/list_products", authorization.soloAdmin, (req, res) =>
 // API Routes
 app.post("/api/login", authentecation.login);
 app.post("/api/register", authentecation.register);
+//products routes
 app.post("/api/products", authorization.soloAdmin, products.create);
 app.get("/api/products", products.getAll);
 app.put("/api/products", authorization.soloAdmin, products.update);
 app.delete("/api/products/:id", authorization.soloAdmin, products.deleteProduct);
+//categories routes
+app.post("/api/categories", authorization.soloAdmin, categories.create);
+app.get("/api/categories", categories.getAll);
+app.put("/api/categories", authorization.soloAdmin, categories.update);
+app.delete("/api/categories/:id", authorization.soloAdmin, categories.deleteCategory);
+app.get("/api/categories/:id", categories.getById);
+
