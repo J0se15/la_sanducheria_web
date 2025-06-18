@@ -57,12 +57,13 @@ async function update(req, res) {
       .send({ status: "Error", message: "Los campos están incompletos" });
   }
 
-  const updatedat = new Date();
 
   try {
+
+    const updatedAt = new Date();
     const updateResult = await query(
       "UPDATE products SET name = $1, quantity = $2, price = $3, isactive = $4, updatedat = $5 WHERE id = $6 RETURNING id, name, quantity, price, isActive",
-      [name, quantity, price, isActive, updatedat, id]
+      [name, quantity, price, isActive, updatedAt, id]
     );
 
     if (updateResult.rowCount === 0) {
@@ -116,10 +117,37 @@ async function deleteProduct(req, res) {
       .send({ status: "Error", message: "Error al eliminar el producto" });
   }
 }
+async function getProductById(req, res) {
+  const { id } = req.params;
+
+  if (!id) {
+    return res
+      .status(400)
+      .send({ status: "Error", message: "El ID del producto es requerido" });
+  }
+
+  try {
+    const result = await query("SELECT * FROM products WHERE id = $1", [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).send({ status: "Error", message: "Producto no encontrado" });
+    }
+
+    return res.status(200).send({
+      status: "ok",
+      message: "Producto obtenido con éxito",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Error al obtener producto:", error);
+    return res.status(500).send({ status: "Error", message: "Error al obtener el producto" });
+  }
+}
 
 export const methods = {
   create,
   getAll,
   update,
   deleteProduct,
+  getProductById
 };

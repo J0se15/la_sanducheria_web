@@ -9,6 +9,8 @@ import { methods as authorization } from "./middlewares/authorization.js"; // Im
 import { methods as categories } from "./controller/categories.controller.js";
 import { connect } from "./database/db.js";
 import { methods as products } from "./controller/products.controller.js";
+import{ methods as inventary } from "./controller/inventary.controller.js";
+import { methods as orders } from "./controller/order.controller.js";
 
 const app = express();
 app.set("port", 4000);
@@ -43,5 +45,16 @@ app.post("/api/categories", authorization.soloAdmin, categories.create);
 app.get("/api/categories", categories.getAll);
 app.put("/api/categories", authorization.soloAdmin, categories.update);
 app.delete("/api/categories/:id", authorization.soloAdmin, categories.deleteCategory);
-app.get("/api/categories/:id", categories.getById);
-
+app.get("/api/categories/:id", categories.getCategoryById);
+//inventary routes
+app.post("/api/inventary", authorization.soloAdmin, inventary.create);
+app.get("/api/inventary", inventary.getAll);
+app.put("/api/inventary", authorization.soloAdmin, inventary.update);
+app.delete("/api/inventary/:id", authorization.soloAdmin, inventary.deleteInventary);
+app.get("/api/inventary/:id", inventary.getInventaryById);
+//orders routes
+app.post("/api/orders", authorization.soloAdmin, orders.create);
+app.get("/api/orders", orders.getAll);
+app.put("/api/orders", authorization.soloAdmin, orders.update);
+app.delete("/api/orders/:id", authorization.soloAdmin, orders.deleteOrder);
+app.get("/api/orders/:id", orders.getOrderById);

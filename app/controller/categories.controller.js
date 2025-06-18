@@ -34,7 +34,6 @@ async function create(req, res) {
 }
 
 async function getAll(req, res) {
-  console.log("Categorias");
   try {
     const result = await query("SELECT * FROM categories");
     console.log("categorias", result.rows);
@@ -57,13 +56,13 @@ async function update(req, res) {
       .status(400)
       .send({ status: "Error", message: "Los campos están incompletos" });
   }
-
-  const updatedat = new Date();
-
   try {
+
+    const updatedAt = new Date();
     const updateResult = await query(
+      
       "UPDATE categories SET name = $1, isactive = $2, updatedat = $3, image = $4 WHERE id = $5 RETURNING id, name, isActive, image",
-      [name, isActive, updatedat, image, id]
+      [name, isActive, updatedAt, image, id]
     );
 
     if (updateResult.rowCount === 0) {
@@ -116,7 +115,7 @@ async function deleteCategory(req, res) {
       .send({ status: "Error", message: "Error al eliminar la categoría" });
   }
 }
-async function getById(req, res) {
+async function getCategoryById(req, res) {
   const { id } = req.params;
 
   if (!id) {
@@ -149,5 +148,5 @@ export const methods = {
   getAll,
   update,
   deleteCategory,
-  getById,
+  getCategoryById,
 };
