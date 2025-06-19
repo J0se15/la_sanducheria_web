@@ -9,8 +9,9 @@ import { methods as authorization } from "./middlewares/authorization.js"; // Im
 import { methods as categories } from "./controller/categories.controller.js";
 import { connect } from "./database/db.js";
 import { methods as products } from "./controller/products.controller.js";
-import{ methods as inventary } from "./controller/inventary.controller.js";
+import { methods as inventary } from "./controller/inventary.controller.js";
 import { methods as orders } from "./controller/order.controller.js";
+import { methods as users } from "./controller/users.controller.js";
 
 const app = express();
 app.set("port", 4000);
@@ -58,3 +59,10 @@ app.get("/api/orders", orders.getAll);
 app.put("/api/orders", authorization.soloAdmin, orders.update);
 app.delete("/api/orders/:id", authorization.soloAdmin, orders.deleteOrder);
 app.get("/api/orders/:id", orders.getOrderById);
+//users routes
+app.post("/api/users", authorization.soloAdmin, users.createUsers);
+app.get("/api/users", users.getAllUsers);
+app.put("/api/users", authorization.soloAdmin, users.updateUsers);
+app.delete("/api/users/:id", authorization.soloAdmin, users.deleteUsers);
+app.get("/api/users/:id", users.getUsersById);
+
