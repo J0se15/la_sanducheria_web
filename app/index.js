@@ -12,6 +12,7 @@ import { methods as products } from "./controller/products.controller.js";
 import { methods as inventary } from "./controller/inventary.controller.js";
 import { methods as orders } from "./controller/order.controller.js";
 import { methods as users } from "./controller/users.controller.js";
+import { methods as user_rol } from "./controller/user_rol.controller.js";
 
 const app = express();
 app.set("port", 4000);
@@ -65,4 +66,9 @@ app.get("/api/users", users.getAllUsers);
 app.put("/api/users", authorization.soloAdmin, users.updateUsers);
 app.delete("/api/users/:id", authorization.soloAdmin, users.deleteUsers);
 app.get("/api/users/:id", users.getUsersById);
-
+//users_roles routes
+app.post("/api/user_rol", authorization.soloAdmin, user_rol.create);
+app.get("/api/user_rol", user_rol.getAll);
+app.put("/api/user_rol", authorization.soloAdmin, user_rol.update);
+app.delete("/api/user_rol/:id", authorization.soloAdmin, user_rol.deleteRol);
+app.get("/api/user_rol/:id", user_rol.getById);
